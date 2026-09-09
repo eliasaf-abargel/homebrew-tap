@@ -11,6 +11,17 @@ cask "ctx" do
 
   app "CTX.app"
 
+  # CTX is signed ad-hoc, with no Apple Developer identity behind it, so the
+  # quarantine flag Homebrew sets on every download makes Gatekeeper refuse to
+  # open it - "the developer cannot be verified". Clearing it here keeps the
+  # install to one command; the manual download instructions say to run the same
+  # xattr by hand, and the repository script has always done it too.
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-r", "-d", "com.apple.quarantine", "#{appdir}/CTX.app"],
+                   must_succeed: false
+  end
+
   zap trash: [
     "~/.ctx",
     "~/Library/Preferences/dev.eliasafa.CTX.plist",
