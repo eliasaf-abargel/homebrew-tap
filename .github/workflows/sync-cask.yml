@@ -1,0 +1,47 @@
+name: Sync CTX cask
+
+# Pulls, rather than being pushed to: a release in the CTX repository cannot write
+# here without a personal access token, and this needs no secret at all.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Update the cask to the latest CTX release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          TAG=$(gh release view --repo eliasaf-abargel/CTX --json tagName -q .tagName)
+          VERSION=${TAG#v}
+          URL="https://github.com/eliasaf-abargel/CTX/releases/download/$TAG/CTX.app.zip"
+
+          # Hash what people will actually download, not a build artifact.
+          curl -fsSL "$URL" -o CTX.app.zip
+          SHA=$(shasum -a 256 CTX.app.zip | awk '{print $1}')
+          rm -f CTX.app.zip
+
+          if grep -q "\"$VERSION\"" Casks/ctx.rb && grep -q "\"$SHA\"" Casks/ctx.rb; then
+            echo "Cask already at $VERSION with a matching hash."
+            exit 0
+          fi
+
+          # A re-uploaded asset changes the hash without changing the version, and
+          # a stale hash fails the install for everyone, so both are rewritten.
+          sed -i -E "s|^  version \".*\"|  version \"$VERSION\"|" Casks/ctx.rb
+          sed -i -E "s|^  sha256 \".*\"|  sha256 \"$SHA\"|" Casks/ctx.rb
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -qm "Update CTX cask to $VERSION" Casks/ctx.rb
+          git push
