@@ -16,7 +16,7 @@ cask "ctx" do
   # open it - "the developer cannot be verified". Clearing it here keeps the
   # install to one command; the manual download instructions say to run the same
   # xattr by hand, and the repository script has always done it too.
-  postflight do
+  postflight_steps do
     system_command "/usr/bin/xattr",
                    args: ["-r", "-d", "com.apple.quarantine", "#{appdir}/CTX.app"],
                    must_succeed: false
