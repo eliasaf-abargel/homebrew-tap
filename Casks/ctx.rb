@@ -7,7 +7,7 @@ cask "ctx" do
   desc "Native cloud and Kubernetes context manager"
   homepage "https://github.com/eliasaf-abargel/CTX"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "CTX.app"
 
