@@ -9,18 +9,20 @@ cask "ctx" do
 
   depends_on macos: :sonoma
 
-  app "CTX.app"
-
   # CTX is signed ad-hoc, with no Apple Developer identity behind it, so the
-  # quarantine flag Homebrew sets on every download makes Gatekeeper refuse to
-  # open it - "the developer cannot be verified". Clearing it here keeps the
-  # install to one command; the manual download instructions say to run the same
-  # xattr by hand, and the repository script has always done it too.
-  postflight_steps do
-    system_command "/usr/bin/xattr",
-                   args: ["-r", "-d", "com.apple.quarantine", "#{appdir}/CTX.app"],
-                   must_succeed: false
+  # quarantine flag Homebrew puts on every download makes Gatekeeper refuse to
+  # open it - "the developer cannot be verified". Cleared here, while the app is
+  # still staged: quarantine is applied when the download is unpacked and simply
+  # travels with the bundle when it moves, so there is nothing left to clear
+  # afterwards. The manual download instructions run the same xattr by hand.
+  preflight_steps do
+    run "/usr/bin/xattr",
+        args:         ["-r", "-d", "com.apple.quarantine", "CTX.app"],
+        chdir:        ".",
+        must_succeed: false
   end
+
+  app "CTX.app"
 
   zap trash: [
     "~/.ctx",
