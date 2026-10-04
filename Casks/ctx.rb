@@ -1,11 +1,13 @@
 cask "ctx" do
-  version "5.0.28"
-  sha256 "6b7430ec0ceef6783f47c68fe1d8612c913bd51e1770613de29216cda74fad14"
+  version "5.0.30"
+  sha256 "08442f147f4298323201d78716a70ccfeb993608b9b9a6c1f772b312d8086e9b"
 
-  url "https://github.com/eliasaf-abargel/CTX/releases/download/v#{version}/CTX.app.zip"
+  url "https://github.com/opsbit-io/ctx/releases/download/v#{version}/CTX.app.zip"
   name "CTX"
   desc "Native cloud and Kubernetes context manager"
-  homepage "https://github.com/eliasaf-abargel/CTX"
+  homepage "https://github.com/opsbit-io/ctx"
+
+  deprecate! date: "2026-10-04", because: "moved to opsbit-io/tap/ctx (brew uninstall --cask ctx; brew install --cask opsbit-io/tap/ctx)"
 
   depends_on macos: :sonoma
 

@@ -1,10 +1,13 @@
 # homebrew-tap
 
-Homebrew tap for [CTX](https://github.com/eliasaf-abargel/CTX), a native cloud and
+> **Moved.** CTX now lives at [opsbit-io/ctx](https://github.com/opsbit-io/ctx) with the tap `opsbit-io/tap`. This tap only stays so existing installs keep upgrading.
+
+
+Homebrew tap for [CTX](https://github.com/opsbit-io/ctx), a native cloud and
 Kubernetes context manager for macOS.
 
 ```sh
-brew install --cask eliasaf-abargel/tap/ctx
+brew install --cask opsbit-io/tap/ctx
 ```
 
 Upgrading later:

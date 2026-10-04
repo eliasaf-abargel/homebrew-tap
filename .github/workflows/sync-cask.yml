@@ -22,9 +22,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          TAG=$(gh release view --repo eliasaf-abargel/CTX --json tagName -q .tagName)
+          TAG=$(gh release view --repo opsbit-io/ctx --json tagName -q .tagName)
           VERSION=${TAG#v}
-          URL="https://github.com/eliasaf-abargel/CTX/releases/download/$TAG/CTX.app.zip"
+          URL="https://github.com/opsbit-io/ctx/releases/download/$TAG/CTX.app.zip"
 
           # Hash what people will actually download, not a build artifact.
           curl -fsSL "$URL" -o CTX.app.zip
