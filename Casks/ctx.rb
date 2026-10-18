@@ -1,6 +1,6 @@
 cask "ctx" do
-  version "5.0.32"
-  sha256 "edfc2c46c30a629d5c23c9f5986d6a4ead54da4a3f13d2ab20b70887942a9ff3"
+  version "5.0.34"
+  sha256 "4030c71ee3166cc7965d95524ae6e8c58c74cdb19d909ac1296841f4d8334254"
 
   url "https://github.com/opsbit-io/ctx/releases/download/v#{version}/CTX.app.zip"
   name "CTX"
